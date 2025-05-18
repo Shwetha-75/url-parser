@@ -3,27 +3,20 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const {MongoClient} = require("mongodb");
-const dns = require('dns');
-const urlparser = require('url');
-const { hostname } = require('os');
-const validator = require("validator")
+
 
 // Basic Configuration
-const port = process.env.PORT || 3000;
-const mongoUrl = "mongodb://root:<db_password>@ac-s1rw6yq-shard-00-00.u7xrpnp.mongodb.net:27017,ac-s1rw6yq-shard-00-01.u7xrpnp.mongodb.net:27017,ac-s1rw6yq-shard-00-02.u7xrpnp.mongodb.net:27017/?replicaSet=atlas-brzy3q-shard-0&ssl=true&authSource=admin&retryWrites=true&w=majority&appName=Cluster0"
+const port =3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/public', express.static(`${process.cwd()}/public`));
 
-app.get('/', function(req, res) {
-  res.sendFile(process.cwd() + '/views/index.html');
-});
+app.use(express.static('public'));
+app.get('/', (_, res) => res.sendFile(__dirname + '/public/index.html'));
 
-const client  = new MongoClient(mongoUrl);
-const db = client.db("db");
-const table =  db.collection("url");
+
 
 const urlDataBase={};
 let shortId=1;
